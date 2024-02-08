@@ -1,0 +1,25 @@
+{% extends "app/base.html" %} {% block content %}
+<br><br>
+<table>
+<tr>
+    <td><form method="post" action="/attendance/start/">
+        {% csrf_token %}
+    <button class="btn btn-primary" type="submit"><h2>業務開始</h2></button>
+    </form>
+    </td>
+</tr><tr><td><br><br><br></td></tr><tr>
+    <td><form method="post" action="/attendance/end/">
+        {% csrf_token %}
+    <button class="btn btn-success" type="submit"><h2>業務終了</h2></button>
+    </form>
+    </td>
+</tr>
+</table>
+
+{% if form.non_field_errors %}
+  <div class="alert alert-danger">
+    {{ form.non_field_errors }}
+  </div>
+{% endif %}
+
+{% endblock %}

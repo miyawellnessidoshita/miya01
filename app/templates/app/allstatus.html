@@ -1,0 +1,66 @@
+{% extends "app/base.html" %} {% block content %}
+<br>
+<div class="card card-profile mx-auto">
+  <div class="card-body">
+    <table><tr>
+        <td><h4>{{ year }}年</h4></td><td>
+          <h4>{{ month }}月</h4></td>
+        <td>&emsp;&emsp;</td>
+        <td type="date">
+            <form method="post" action="/allstatus/">
+                {% csrf_token %}
+                {{ form.days }}
+        </td>
+        <td>
+            <button class="btn btn-info" type="submit">年月変更</button>
+            </form>
+        </td>
+        <td>※年月があっていれば、日付は何でもよい</td>
+    </tr></table>
+  </div>
+</div>
+
+{% for user, attendance_qs in user_attendance.items %}
+  <div class="card card-profile my-5 mx-auto">
+    <div class="card-body">
+      <h5>{{ user.first_name }}{{ user.last_name }}の勤務情報</h5>
+      <table class="profile_table mb-4">
+        <tbody>
+          <tr>
+            <th class="header">出勤日</th>
+            <th class="header">出勤時間</th>
+            <th class="header">退勤時間</th>
+            <th class="header">勤務時間</th>
+          </tr>
+          {% for attendance in attendance_qs %}
+            {% if attendance.days.year == year and attendance.days.month == month %}
+              <tr>
+                <td class="data">{{ attendance.days|date:"m月d日" }}</td>
+                <td class="data">{{ attendance.start|time:"H:i" }}</td>
+                <td class="data">{{ attendance.end|time:"H:i" }}</td>
+                <td class="data">
+                  {% if attendance.end %}
+                    {{ attendance.start|timesince:attendance.end }}
+                  {% endif %}
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h6>月間勤務日数：{% for i,u in work_time_counts.items %}
+        {% if user == i %}
+        {{ u }}
+        {% endif %}
+        {% endfor %}
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;月間勤務集計時間：{% for i,u in total_work_times.items %}
+        {% if user == i %}
+        {{ u }}
+        {% endif %}
+        {% endfor %}</h6>
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock %}

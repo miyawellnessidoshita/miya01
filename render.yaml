@@ -1,0 +1,29 @@
+databases:
+  - name: attendance_db
+    databaseName: attendance_db
+    user: attendance_user
+    region: singapore
+    plan: free
+
+
+
+services:
+  - type: web
+    name: attendance
+    runtime: python
+    region: singapore
+    plan: free
+    branch: main
+    healthCheckPath: /
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn mysite.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: attendance_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+    autoDeploy: true
