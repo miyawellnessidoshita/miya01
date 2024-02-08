@@ -21,7 +21,7 @@ from dj_database_url import parse as dburl
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
-env.read_env(os.path.join(BASE_DIR,".env"))
+env.read_env(os.path.join(BASE_DIR, ".env"))
 
 
 
@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'barmenu.wsgi.application'
 default_dburl = "sqlite:///" + str(BASE_DIR / "db.sqlite3")
 
 DATABASES = {
-	"default": config("DATABASE_URL",default=default_dburl,cast=dburl),
+    "default": config("DATABASE_URL", default=default_dburl, cast=dburl),
 }
 
 
@@ -133,7 +133,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = str(BASE_DIR / "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
